@@ -14,7 +14,6 @@ from pyrogram import *
 from pyrogram.errors import *
 from pyrogram.types import *
 
-
 broadcast_ids = {}
 
 @Client.on_message(filters.command("broadcast") & filters.private & filters.user(ADMINS))
@@ -25,7 +24,7 @@ async def broadcast_handler(c:Client, m:Message):
         except Exception as e:
             logging.error("Failed to broadcast", exc_info=True)
     else:
-        await m.reply_text("Reply to the message you want to broadcast")
+        await m.reply_text("**Reply to the message you want to broadcast**")
 
 async def send_msg(user_id, message):
     try:
@@ -54,7 +53,7 @@ async def main_broadcast_handler(m: Message):
         broadcast_id = ''.join([random.choice(string.ascii_letters) for _ in range(3)])
         if not broadcast_ids.get(broadcast_id):
             break
-    out = await m.reply_text(text="Broadcast Started! You will be notified with log file when all the users are notified.")
+    out = await m.reply_text(text="<blockquote><b>Broadcast Started! You will be notified with log file when all the users are notified.</b></blockquote>")
 
     start_time = time.time()
     total_users = await total_users_count()
@@ -86,22 +85,28 @@ async def main_broadcast_handler(m: Message):
     await asyncio.sleep(3)
     await out.delete()
     if failed == 0:
-        await m.reply_text(text=f"Broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.", quote=True)
+        await m.reply_text(text=f"""<blockquote><b>
+Broadcast completed in: {completed_in}
+Total users: {total_users}
+
+Total done {done},
+{success} success
+{failed} failed.
+</b></blockquote>""", quote=True)
 
     else:
-        await m.reply_document(document='broadcast.txt', caption=f"Broadcast completed in `{completed_in}`\n\nTotal users {total_users}.\nTotal done {done}, {success} success and {failed} failed.", quote=True)
+        await m.reply_document(document='broadcast.txt', caption=f"""<blockquote><b>
+Broadcast completed in: {completed_in}
+Total users: {total_users}.
+
+Total done {done}, 
+{success} success,
+{failed} failed.
+</b></blockquote>""", quote=True)
 
     await aiofiles.os.remove('broadcast.txt')
 """
-   _____                    __  __         _    _              _       _______           _     
-  / ____|                  |  \/  |       | |  | |            ( )     |__   __|         | |    
- | |  __  _ __  ___  _   _ | \  / |  __ _ | |_ | |_  ___  _ __|/ ___     | |  ___   ___ | |__  
- | | |_ || '__|/ _ \| | | || |\/| | / _` || __|| __|/ _ \| '__| / __|    | | / _ \ / __|| '_ \ 
- | |__| || |  |  __/| |_| || |  | || (_| || |_ | |_|  __/| |    \__ \    | ||  __/| (__ | | | |
-  \_____||_|   \___| \__, ||_|  |_| \__,_| \__| \__|\___||_|    |___/    |_| \___| \___||_| |_|
-                      __/ |                                                                    
-                     |___/                                                                     
-Author: GreyMatter's Tech
-GitHub: https://GreyMattersTech.com/GitHub
-Website: https://GreyMattersTech.com
+Author: StupidBoi
+Telegram: https://t.me/StupidBoi69
 """
+        
