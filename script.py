@@ -54,7 +54,7 @@ START_MESSAGE_REPLY_MARKUP = InlineKeyboardMarkup([
 ])
 
 BACK_REPLY_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton('◀️ Back', callback_data='help_command')]
+    [InlineKeyboardButton('◀️ Back', callback_data='alias_conf')]
 ])
 
 USER_ABOUT_MESSAGE = f"""<b>
