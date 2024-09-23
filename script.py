@@ -18,7 +18,7 @@ https://{Config.BASE_SITE}/member/tools/api
 Example: /set_api 20eb8456008878c0349fc79d40fb4d1634cccf12
 '''
 
-CREDIT_TEXT = """<blockquote><b>
+ABOUT_TEXT = """<blockquote><b>
 Bot Information:
 - 🤖 Name: {}
 - 📝 Language: [Python 3](https://www.python.org/)
@@ -37,25 +37,6 @@ ADMINS_MESSAGE = """
 **Admins with Access:
 {admin_list}**
 """
-
-ALIAS_REPLY_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton('🏠 Home', callback_data='start_command')],
-    [InlineKeyboardButton('🏷️ Credit', callback_data='credit_command')]
-])
-
-CREDIT_REPLY_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton('⏺️ Custom Alias', callback_data='alias_conf')],
-    [InlineKeyboardButton('📴 Close', callback_data='delete')]
-])
-
-START_MESSAGE_REPLY_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton('🏷️ Credit', callback_data='credit_command')],
-    [InlineKeyboardButton('📴 Close', callback_data='delete')]
-])
-
-BACK_REPLY_MARKUP = InlineKeyboardMarkup([
-    [InlineKeyboardButton('◀️ Back', callback_data='alias_conf')]
-])
 
 USER_ABOUT_MESSAGE = f"""<b>
 Account Information
