@@ -15,7 +15,7 @@ from bot import *
 logger = logging.getLogger(__name__)
 
 user_commands = ["set_api", "header", "footer", "username", "banner_image", "me"]
-avl_web = ["GreyMatterslinks.in",]
+avl_web = ["runurl.in", "kingurl.in",]
 
 avl_web1 = "".join(f"- {i}\n" for i in avl_web)
 
@@ -23,15 +23,14 @@ avl_web1 = "".join(f"- {i}\n" for i in avl_web)
 async def start(c:Client, m:Message):
     NEW_USER_REPLY_MARKUP = [
                 [
-                    InlineKeyboardButton('Ban', callback_data=f'ban#{m.from_user.id}'),
-                    InlineKeyboardButton('Close', callback_data='delete'),
+                    InlineKeyboardButton('🔴 Ban', callback_data=f'ban#{m.from_user.id}'),
+                    InlineKeyboardButton('📴 Close', callback_data='delete'),
                 ]
             ]
     is_user = await is_user_exist(m.from_user.id)
-
     reply_markup = InlineKeyboardMarkup(NEW_USER_REPLY_MARKUP)
 
-    if not is_user and LOG_CHANNEL: await c.send_message(LOG_CHANNEL, f"#NewUser\n\nUser ID: `{m.from_user.id}`\nName: {m.from_user.mention}", reply_markup=reply_markup)
+    if not is_user and LOG_CHANNEL: await c.send_message(LOG_CHANNEL, f"<blockquote><b>#NewUser\n\nUser ID: {m.from_user.id}\nUser: {m.from_user.mention}</b></blockquote>", reply_markup=reply_markup)
     new_user = await get_user(m.from_user.id)  
     t = START_MESSAGE.format(m.from_user.mention, new_user["method"], new_user["base_site"])
 
@@ -73,7 +72,7 @@ async def shortener_api_handler(bot, m: Message):
     elif len(cmd) == 2:
         api = cmd[1].strip()
         await update_user_info(user_id, {"shortener_api": api})
-        await m.reply(f"Shortener API updated successfully to {api}")
+        await m.reply(f"**Shortener API updated successfully to {api}**")
 
 @Client.on_message(filters.command('header') & filters.private)
 async def header_handler(bot, m: Message):
@@ -83,12 +82,12 @@ async def header_handler(bot, m: Message):
     if m.reply_to_message:
         header_text = m.reply_to_message.text.html
         await update_user_info(user_id, {"header_text": header_text})
-        await m.reply("Header Text Updated Successfully")
+        await m.reply("**Header Text Updated Successfully**")
     elif "remove" in cmd:
         await update_user_info(user_id, {"header_text": ""})
-        return await m.reply("Header Text Successfully Removed")
+        return await m.reply("**Header Text Successfully Removed**")
     else:
-        return await m.reply(HEADER_MESSAGE + "\n\nCurrent Header Text: " + user["header_text"].replace("\n", "\n"))
+        return await m.reply(<b>HEADER_MESSAGE + "\n\nCurrent Header Text: " + user["header_text"].replace("\n", "\n"</b>))
 
 @Client.on_message(filters.command('footer') & filters.private)
 async def footer_handler(bot, m: Message):
@@ -131,22 +130,21 @@ async def banner_image_handler(bot, m: Message):
     cmd = m.command
     if len(cmd) == 1:
         if not m.reply_to_message or not m.reply_to_message.photo:
-            return await m.reply_photo(user["banner_image"], caption=BANNER_IMAGE) if user["banner_image"] else await m.reply("Current Banner Image URL: None\n" + BANNER_IMAGE)
+            return await m.reply_photo(user["banner_image"], caption=BANNER_IMAGE) if user["banner_image"] else await m.reply("<b>Current Banner Image URL: None\n" + BANNER_IMAGE</b>)
 
         fileid = m.reply_to_message.photo.file_id
         await update_user_info(user_id, {"banner_image": fileid})
-        return await m.reply_photo(fileid, caption="Banner Image updated successfully")
+        return await m.reply_photo(fileid, caption="**Banner Image updated successfully**")
     elif len(cmd) == 2:
         if "remove" in cmd:
             await update_user_info(user_id, {"banner_image": ""})
-            return await m.reply("Banner Image Successfully Removed")
+            return await m.reply("**Banner Image Successfully Removed**")
         else:
             image_url = cmd[1].strip()
             valid_image_url = await extract_link(image_url)
             if valid_image_url:
                 await update_user_info(user_id, {"banner_image": image_url})
-                return await m.reply_photo(image_url, caption="Banner Image updated successfully")
-
+                return await m.reply_photo(image_url, caption="**Banner Image updated successfully**")
             else:
                 return await m.reply_text("Image URL is Invalid")
 
@@ -162,24 +160,20 @@ async def me_handler(bot, m:Message):
                 base_site=user["base_site"], 
                 method=user["method"], 
                 shortener_api=user["shortener_api"], 
-                mdisk_api=user["mdisk_api"],
-                username=user["username"],
                 header_text=user["header_text"].replace(r'\n', '\n') if user["header_text"] else None,
                 footer_text=user["footer_text"].replace(r'\n', '\n') if user["footer_text"] else None,
                 banner_image=user["banner_image"])
-
     buttons = await get_me_button(user)
     reply_markup = InlineKeyboardMarkup(buttons)
     return await m.reply_text(res, reply_markup=reply_markup, disable_web_page_preview=True)
-
-
+#                mdisk_api=user["mdisk_api"],
 
 
 @Client.on_message(filters.command('ban') & filters.private & filters.user(ADMINS))
 async def banned_user_handler(c: Client, m: Message):
     try:
         if len(m.command) == 1:
-            x = "".join(f"- `{user}`\n" for user in temp.BANNED_USERS)
+            x = "".join(f"- {user}\n" for user in temp.BANNED_USERS)
             txt = BANNED_USER_TXT.format(users=x or "None")
             await m.reply(txt)
         elif len(m.command) == 2:
@@ -190,8 +184,8 @@ async def banned_user_handler(c: Client, m: Message):
                     await update_user_info(user_id, {"banned": True})
                     with contextlib.suppress(Exception):
                         temp.BANNED_USERS.append(int(user_id))
-                        await c.send_message(user_id, "You are now banned from the bot by Admin")
-                    await m.reply(f"User [`{user_id}`] has been banned from the bot. To Unban. `/unban {user_id}`")
+                        await c.send_message(user_id, "<blockquote><b>You are now banned from the bot by Admin</b></blockquote>")
+                    await m.reply(f"<blockquote><b>User [{user_id}] has been banned from the bot. To Unban. /unban {user_id}</b></blockquote>")
 
                 else:
                     await m.reply("User is already banned")
@@ -204,7 +198,7 @@ async def banned_user_handler(c: Client, m: Message):
 async def unban_user_handler(c: Client, m: Message):
     try:
         if len(m.command) == 1:
-            x = "".join(f"- `{user}`\n" for user in temp.BANNED_USERS)
+            x = "".join(f"- {user}\n" for user in temp.BANNED_USERS)
             txt = BANNED_USER_TXT.format(users=x or "None")
             await m.reply(txt)
         elif len(m.command) == 2:
@@ -215,9 +209,8 @@ async def unban_user_handler(c: Client, m: Message):
                     await update_user_info(user_id, {"banned": False})
                     with contextlib.suppress(Exception):
                         temp.BANNED_USERS.remove(int(user_id))
-                        await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")
-
-                    await m.reply(f"User [`{user_id}`] has been unbanned from the bot. To ban. `/ban {user_id}`")
+                        await c.send_message(user_id, "<blockquote><b>You are now free to use the bot. You have been unbanned by the Admin</b></blockquote>")
+                    await m.reply(f"<blockquote><b>User [{user_id}] has been unbanned from the bot. To ban. /ban {user_id}</b></blockquote>")
 
                 else:
                     await m.reply("User is not banned yet")
@@ -226,15 +219,6 @@ async def unban_user_handler(c: Client, m: Message):
     except Exception as e:
         logging.exception(e, exc_info=True)
 """
-   _____                    __  __         _    _              _       _______           _     
-  / ____|                  |  \/  |       | |  | |            ( )     |__   __|         | |    
- | |  __  _ __  ___  _   _ | \  / |  __ _ | |_ | |_  ___  _ __|/ ___     | |  ___   ___ | |__  
- | | |_ || '__|/ _ \| | | || |\/| | / _` || __|| __|/ _ \| '__| / __|    | | / _ \ / __|| '_ \ 
- | |__| || |  |  __/| |_| || |  | || (_| || |_ | |_|  __/| |    \__ \    | ||  __/| (__ | | | |
-  \_____||_|   \___| \__, ||_|  |_| \__,_| \__| \__|\___||_|    |___/    |_| \___| \___||_| |_|
-                      __/ |                                                                    
-                     |___/                                                                     
-Author: GreyMatter's Tech
-GitHub: https://GreyMattersTech.com/GitHub
-Website: https://GreyMattersTech.com
+Author: StupidBoi
+Telegram: https://t.me/StupidBoi69
 """
