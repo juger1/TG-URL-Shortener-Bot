@@ -18,9 +18,6 @@ from bot import *
 logger = logging.getLogger(__name__)
 
 
-
-
-
 @Client.on_callback_query(filters.regex(r"^ban"))
 async def ban_cb_handler(c:Client,m: CallbackQuery):
     try:
@@ -33,21 +30,21 @@ async def ban_cb_handler(c:Client,m: CallbackQuery):
                 await update_user_info(user_id, {"banned": True})
                 try:
                     owner = await c.get_users(int(OWNER_ID))
-                    await c.send_message(user_id, f"You are now banned from the bot by Admin. Contact {owner.mention(style='md')} regarding this")
+                    await c.send_message(user_id, f"**🔴 You are now banned from the bot by Admin. Contact {owner.mention(style='md')} regarding this**")
                 except Exception as e:
                     logging.error(e)
                 reply_markup = InlineKeyboardMarkup( [
                 [
-                    InlineKeyboardButton('Unban', callback_data=f'unban#{user_id}'),
-                    InlineKeyboardButton('Close', callback_data='delete'),
+                    InlineKeyboardButton('🟢 Unban', callback_data=f'unban#{user_id}'),
+                    InlineKeyboardButton('📴 Close', callback_data='delete'),
                 ]
             ])
                 await m.edit_message_reply_markup(reply_markup)
-                await m.answer(f"User [{user_id}] has been banned from the bot", show_alert=True)
+                await m.answer(f"**User [{user_id}] has been banned from the bot**", show_alert=True)
             else:
-                await m.answer("User is already banned", show_alert=True)
+                await m.answer("**User is already banned**", show_alert=True)
         else:
-            await m.answer("User doesn't exist", show_alert=True)
+            await m.answer("**User doesn't exist**", show_alert=True)
     except Exception as e:
         logging.exception(e, exc_info=True)
 
@@ -60,14 +57,20 @@ async def unban_cb_handler(c, m: CallbackQuery):
             temp.BANNED_USERS.remove(int(user_id))
             await update_user_info(user_id, {"banned": False})
             with contextlib.suppress(Exception):
-                await c.send_message(user_id, "You are now free to use the bot. You have been unbanned by the Admin")
-            reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton('Ban', callback_data=f'ban#{user_id}'), InlineKeyboardButton('Close', callback_data='delete')]])
+                await c.send_message(user_id, "**🟢 You are now free to use the bot. You have been unbanned by the Admin**")
+            reply_markup = InlineKeyboardMarkup( [
+                [
+                    InlineKeyboardButton('🔴 Ban', callback_data=f'ban#{user_id}'),
+                    InlineKeyboardButton('📴 Close', callback_data='delete'),
+                ]
+            ])
+                
             await m.edit_message_reply_markup(reply_markup)
-            await m.answer("User is unbanned", show_alert=True)
+            await m.answer("**User is unbanned**", show_alert=True)
         else:
-            await m.answer("User is not banned yet", show_alert=True)
+            await m.answer("**User is not banned yet**", show_alert=True)
     else:
-        await m.answer("User doesn't exist", show_alert=True)
+        await m.answer("**User doesn't exist**", show_alert=True)
 
 
 @Client.on_callback_query(filters.regex("^setgs"))
@@ -122,15 +125,7 @@ async def on_callback_query(bot: Client, query: CallbackQuery):
         os.execl(sys.executable, sys.executable, *sys.argv)
     await query.answer()
 """
-   _____                    __  __         _    _              _       _______           _     
-  / ____|                  |  \/  |       | |  | |            ( )     |__   __|         | |    
- | |  __  _ __  ___  _   _ | \  / |  __ _ | |_ | |_  ___  _ __|/ ___     | |  ___   ___ | |__  
- | | |_ || '__|/ _ \| | | || |\/| | / _` || __|| __|/ _ \| '__| / __|    | | / _ \ / __|| '_ \ 
- | |__| || |  |  __/| |_| || |  | || (_| || |_ | |_|  __/| |    \__ \    | ||  __/| (__ | | | |
-  \_____||_|   \___| \__, ||_|  |_| \__,_| \__| \__|\___||_|    |___/    |_| \___| \___||_| |_|
-                      __/ |                                                                    
-                     |___/                                                                     
-Author: GreyMatter's Tech
-GitHub: https://GreyMattersTech.com/GitHub
-Website: https://GreyMattersTech.com
+Author: StupidBoi
+Telegram: https://t.me/StupidBoi69
 """
+
