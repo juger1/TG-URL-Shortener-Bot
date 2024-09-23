@@ -10,10 +10,8 @@ import shortener
 from shortener import *
 from pyshortner import *
 logger = logging.getLogger(__name__)
-
 channel = UPDATE_CHANNEL
-
-ft = f"Due To Overload Only Channel Subscribers can Use the Bot Join - @GreyMattersTech"
+ft = f"<blockquote><b>Due To Overload Only Channel Subscribers can Use the Bot Join @{Config.CHANNEL_NAME}</b></blockquote>"
 
 
 # Private Chat
@@ -43,14 +41,14 @@ async def private_link_handler(c: Client, message: Message):
         if vld is not True:
             return await message.reply_text(vld)
         try:
-            txt = await message.reply('`Converting.......`', quote=True)
+            txt = await message.reply('Converting.......', quote=True)
 
             await mains_convertor_handlers(message, user_method, user=user)
             await update_stats(message, user_method)
-            bin_caption = f"""{caption}
+            bin_caption = f"""<blockquote><b>{caption}
 
 #NewPost
-From User :- {message.from_user.mention} [`{message.from_user.id}`]"""
+From User :- {message.from_user.mention} [{message.from_user.id}]</b></blockquote>"""
 
             try:
                 if LOG_CHANNEL and message.media:
@@ -66,16 +64,8 @@ From User :- {message.from_user.mention} [`{message.from_user.id}`]"""
             
     except Exception as e:
         logging.exception(e, exc_info=True)
+
 """
-   _____                    __  __         _    _              _       _______           _     
-  / ____|                  |  \/  |       | |  | |            ( )     |__   __|         | |    
- | |  __  _ __  ___  _   _ | \  / |  __ _ | |_ | |_  ___  _ __|/ ___     | |  ___   ___ | |__  
- | | |_ || '__|/ _ \| | | || |\/| | / _` || __|| __|/ _ \| '__| / __|    | | / _ \ / __|| '_ \ 
- | |__| || |  |  __/| |_| || |  | || (_| || |_ | |_|  __/| |    \__ \    | ||  __/| (__ | | | |
-  \_____||_|   \___| \__, ||_|  |_| \__,_| \__| \__|\___||_|    |___/    |_| \___| \___||_| |_|
-                      __/ |                                                                    
-                     |___/                                                                     
-Author: GreyMatter's Tech
-GitHub: https://GreyMattersTech.com/GitHub
-Website: https://GreyMattersTech.com
+Author: StupidBoi
+Telegram: https://t.me/StupidBoi69
 """
