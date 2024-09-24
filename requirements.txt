@@ -9,5 +9,4 @@ pyshorteners
 aiofiles
 dnspython
 python-dotenv
-domainers
 shortener
