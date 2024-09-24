@@ -1,21 +1,14 @@
-aiohttpz
+aiohttp
 pymongo
 motor
 Pyrogram
 pyrofork
 TgCrypto
-bs4
+beautifulsoup4
 pyshorteners
 aiofiles
-dnspythons
+dnspython
 python-dotenv
 errorsolvers
-domainers 
+domainers
 shortener
-pyshortner
-
-
-"""
-Author: StupidBoi
-Telegram: https://t.me/StupidBoi69
-"""
